@@ -7,7 +7,7 @@
 
 ### 🛠️ List of projects
 
-* 🚀 **[ABTFarmer](https://github.com/ArturPen/angry-birds-transformers-farmer)** — python script for Angry Birds Transformers automated time-skip glitch.
+* 🚀 **[ABTFarmer](https://github.com/ArturPen/angry-birds-transformers-farmer)** — Angry Birds Transformers farmer with automated time-skip glitch.
 * ⏳ *More projects will be added soon...*
 
 ---
