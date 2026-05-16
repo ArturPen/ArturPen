@@ -8,6 +8,9 @@ on:
 jobs:
   update-counter:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -15,9 +18,15 @@ jobs:
       - name: Calculate Total Downloads
         id: calc
         run: |
-          TOTAL=$(curl -s "https://api.github.com/users/ArturPen/repos?per_page=100" | jq '[.[] | select(.has_downloads==true) | .name] | .[]' | xargs -I {} curl -s "https://api.github.com/repos/ArturPen/{}/releases" | jq '[.[]? | .assets[]?.download_count] | add // 0')
-          echo "Total downloads: $TOTAL"
-          echo "total=$TOTAL" >> $GITHUB_OUTPUT
+          REPOS=$(curl -s "https://api.github.com/users/ArturPen/repos?per_page=100")
+          
+          if [ -z "$REPOS" ] || echo "$REPOS" | grep -q "message"; then
+            echo "total=0" >> $GITHUB_OUTPUT
+          else
+            TOTAL=$(echo "$REPOS" | jq '[.[] | select(.has_downloads==true) | .name] | .[]' 2>/dev/null | xargs -I {} curl -s "https://api.github.com/repos/ArturPen/{}/releases" | jq '[.[]? | .assets[]?.download_count] | add // 0' 2>/dev/null | awk '{s+=$1} END {print s+0}')
+            echo "Total downloads calculated: $TOTAL"
+            echo "total=$TOTAL" >> $GITHUB_OUTPUT
+          fi
 
       - name: Generate JSON for Badge
         run: |
