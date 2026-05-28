@@ -18,22 +18,33 @@ jobs:
       - name: Calculate Total Downloads
         id: calc
         run: |
+          echo "=== Fetching repositories ==="
           REPOS=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/users/ArturPen/repos?per_page=100")
-
-          if [ -z "$REPOS" ] || (echo "$REPOS" | grep -q "message" && ! echo "$REPOS" | grep -q "html_url"); then
-            echo "API Error or empty response, keeping old value or fallback to 0"
+          
+          echo "GitHub API response (first 10 lines):"
+          echo "$REPOS" | head -n 10
+          
+          FIRST_CHAR=$(echo "$REPOS" | cut -c1)
+          
+          if [ "$FIRST_CHAR" != "[" ]; then
+            echo "Error: API did not return an array. Possible rate limit or token issue."
             echo "total=0" >> $GITHUB_OUTPUT
           else
             NAMES=$(echo "$REPOS" | jq -r '.[] | select(.has_downloads==true) | .name')
+            echo "Found repositories to check: $NAMES"
             
             TOTAL=0
             for REPO in $NAMES; do
+              echo "Checking releases for repository: $REPO"
               RELEASES=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/ArturPen/$REPO/releases")
+              
               COUNT=$(echo "$RELEASES" | jq '[.[]? | .assets[]?.download_count] | add // 0' 2>/dev/null)
+              echo "Downloads in $REPO: $COUNT"
+              
               TOTAL=$((TOTAL + COUNT))
             done
             
-            echo "Total downloads calculated: $TOTAL"
+            echo "=== Final Calculation: $TOTAL ==="
             echo "total=$TOTAL" >> $GITHUB_OUTPUT
           fi
 
