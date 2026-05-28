@@ -18,12 +18,21 @@ jobs:
       - name: Calculate Total Downloads
         id: calc
         run: |
-          REPOS=$(curl -s "https://api.github.com/users/ArturPen/repos?per_page=100")
-          
-          if [ -z "$REPOS" ] || echo "$REPOS" | grep -q "message"; then
+          REPOS=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/users/ArturPen/repos?per_page=100")
+
+          if [ -z "$REPOS" ] || (echo "$REPOS" | grep -q "message" && ! echo "$REPOS" | grep -q "html_url"); then
+            echo "API Error or empty response, keeping old value or fallback to 0"
             echo "total=0" >> $GITHUB_OUTPUT
           else
-            TOTAL=$(echo "$REPOS" | jq '[.[] | select(.has_downloads==true) | .name] | .[]' 2>/dev/null | xargs -I {} curl -s "https://api.github.com/repos/ArturPen/{}/releases" | jq '[.[]? | .assets[]?.download_count] | add // 0' 2>/dev/null | awk '{s+=$1} END {print s+0}')
+            NAMES=$(echo "$REPOS" | jq -r '.[] | select(.has_downloads==true) | .name')
+            
+            TOTAL=0
+            for REPO in $NAMES; do
+              RELEASES=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/ArturPen/$REPO/releases")
+              COUNT=$(echo "$RELEASES" | jq '[.[]? | .assets[]?.download_count] | add // 0' 2>/dev/null)
+              TOTAL=$((TOTAL + COUNT))
+            done
+            
             echo "Total downloads calculated: $TOTAL"
             echo "total=$TOTAL" >> $GITHUB_OUTPUT
           fi
