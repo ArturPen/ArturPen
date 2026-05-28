@@ -18,18 +18,17 @@ jobs:
       - name: Calculate Total Downloads
         id: calc
         run: |
-          echo "=== Fetching releases directly ==="
+          echo "=== Fetching releases from correct repository path ==="
           
           RELEASES=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/ArturPen/angry-birds-transformers-farmer/releases")
-        
+          
           if echo "$RELEASES" | jq -e '.message' >/dev/null 2>&1; then
-            echo "Error: GitHub API returned an error message."
+            echo "Error received from GitHub API:"
             echo "$RELEASES"
             echo "total=0" >> $GITHUB_OUTPUT
           else
             TOTAL=$(echo "$RELEASES" | jq '[.[]? | .assets[]?.download_count] | add // 0' 2>/dev/null)
-            
-            echo "=== Final Calculation for ABTFarmer: $TOTAL ==="
+            echo "=== Success! Total downloads: $TOTAL ==="
             echo "total=$TOTAL" >> $GITHUB_OUTPUT
           fi
           
