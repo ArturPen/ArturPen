@@ -28,4 +28,4 @@
 
 | 🌟 Total Stars | 📥 Total Downloads | 👁️ Followers |
 | :---: | :---: | :---: |
-| <img src="https://img.shields.io/github/stars/ArturPen?style=for-the-badge&label=Total%20Stars&color=yellow&labelColor=1a1b26" alt="Total Stars"> | <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/ArturPen/ArturPen/main/downloads-counter.json&cacheSeconds=3600" alt="Total Downloads"> | <img src="https://img.shields.io/github/followers/ArturPen?style=for-the-badge&label=Followers&color=7db9f5&labelColor=1a1b26" alt="Followers"> |
+| <img src="https://img.shields.io/github/stars/ArturPen?style=for-the-badge&label=Total%20Stars&color=yellow&labelColor=1a1b26" alt="Total Stars"> | <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/ArturPen/ArturPen/main/downloads-counter.json&cacheSeconds=300" alt="Total Downloads"> | <img src="https://img.shields.io/github/followers/ArturPen?style=for-the-badge&label=Followers&color=7db9f5&labelColor=1a1b26" alt="Followers"> |
