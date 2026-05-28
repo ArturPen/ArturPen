@@ -21,16 +21,13 @@ jobs:
           echo "=== Fetching repositories ==="
           REPOS=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/users/ArturPen/repos?per_page=100")
           
-          echo "GitHub API response (first 10 lines):"
-          echo "$REPOS" | head -n 10
-          
-          FIRST_CHAR=$(echo "$REPOS" | cut -c1)
-          
-          if [ "$FIRST_CHAR" != "[" ]; then
-            echo "Error: API did not return an array. Possible rate limit or token issue."
+          # Check if the response contains valid JSON or an API error message
+          if echo "$REPOS" | jq -e '.message' >/dev/null 2>&1; then
+            echo "Error: GitHub API returned an error message."
+            echo "$REPOS"
             echo "total=0" >> $GITHUB_OUTPUT
           else
-            NAMES=$(echo "$REPOS" | jq -r '.[] | select(.has_downloads==true) | .name')
+            NAMES=$(echo "$REPOS" | jq -r '.[]? | select(.has_downloads==true) | .name')
             echo "Found repositories to check: $NAMES"
             
             TOTAL=0
