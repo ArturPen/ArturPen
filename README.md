@@ -15,7 +15,7 @@
 ### 🌐 Connect with Me
 
 <p align="center">
-  <a href="google.com target="_blank"><img src="https://img.shields.io/badge/Website-7aa2f7?style=for-the-badge&logo=google-chrome&logoColor=white&labelColor=1a1b26" alt="Website"></a>&nbsp;
+  <a href="https://google.com target="_blank"><img src="https://img.shields.io/badge/Website-7aa2f7?style=for-the-badge&logo=google-chrome&logoColor=white&labelColor=1a1b26" alt="Website"></a>&nbsp;
   <a href="https://www.youtube.com/@ArturPen" target="_blank"><img src="https://img.shields.io/badge/YouTube-f7768e?style=for-the-badge&logo=youtube&logoColor=white&labelColor=1a1b26" alt="YouTube"></a>&nbsp;
   <a href="https://www.reddit.com/user/artur_pen/" target="_blank"><img src="https://img.shields.io/badge/Reddit-ff9e64?style=for-the-badge&logo=reddit&logoColor=white&labelColor=1a1b26" alt="Reddit"></a>&nbsp;
   <a href="https://www.linkedin.com/in/artur-pen/" target="_blank"><img src="https://img.shields.io/badge/LinkedIn-7db9f5?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=1a1b26" alt="LinkedIn"></a>&nbsp;
